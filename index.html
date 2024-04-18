@@ -40,6 +40,7 @@
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
 
+	<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 	</head>
 	<body>
 		
@@ -376,7 +377,7 @@
 		</div>
 		<div class="choose animate-box">
 			<h2 id="contact">Contact</h2>
-			<form action="contact/contact.php">
+			<form class="contactForm">
 				<div class="row form-group">
 					<div class="col-md-6">
 						<input type="text" id="fname" class="form-control" placeholder="Your firstname">
@@ -444,6 +445,40 @@
 	
 	<!-- Main -->
 	<script src="js/main.js"></script>
+	<script>
+		(function() {
+			emailjs.init("kYK_ebSQffZ92UFdo"); 
+		})();
+	
+		document.getElementById('contactForm').addEventListener('submit', function(event) {
+			event.preventDefault(); // Prevent default form submission
+	
+			// Get form values
+			var firstName = document.getElementById('fname').value;
+			var lastName = document.getElementById('lname').value;
+			var email = document.getElementById('email').value;
+			var subject = document.getElementById('subject').value;
+			var message = document.getElementById('message').value;
+	
+			// Send email using EmailJS
+			var templateParams = {
+				from_name: firstName + ' ' + lastName,
+				to_email: email,
+				subject: subject,
+				message_html: message
+			};
+	
+			emailjs.send('service_mew6scw', 'template_6dnpojt', templateParams)
+				.then(function(response) {
+					console.log('Email sent successfully:', response);
+					alert('Your message has been sent successfully!');
+					document.getElementById('contactForm').reset();
+				}, function(error) {
+					console.error('Email sending failed:', error);
+					alert('An error occurred while sending the message. Please try again later.');
+				});
+		});
+	</script>
 
 	</body>
 </html>
